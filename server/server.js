@@ -4,6 +4,7 @@ const { promisify } = require('util');
 const redis = require('redis');
 const session = require('koa-session');
 const Koa = require('koa');
+const favicon = require('koa-favicon');
 const app = new Koa();
 const body = require('koa-better-body');
 const { Nuxt, Builder } = require('nuxt');
@@ -56,6 +57,8 @@ async function start() {
   }
 
   app.use(body());
+
+  app.use(favicon(path.resolve(__dirname, '../static/favicon.ico')));
 
   app.keys = ['secret key'];
 
@@ -222,8 +225,8 @@ async function start() {
     nuxt.render(ctx.req, ctx.res);
   });
 
-  app.listen(3000);
-  console.log('http server listen at 3000');
+  app.listen(3001);
+  console.log('http server listen at 3001');
 }
 
 start();

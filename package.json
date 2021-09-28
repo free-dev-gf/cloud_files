@@ -21,6 +21,7 @@
     "formidable": "^1.2.2",
     "koa": "^2.13.3",
     "koa-better-body": "^3.3.9",
+    "koa-favicon": "^2.1.0",
     "koa-session": "^6.2.0",
     "less": "^4.1.1",
     "less-loader": "7.3.0",
