@@ -1,11 +1,11 @@
 <template>
   <div class="c-file-item">
-    <div v-for="item in desc" :key="item.name">
+    <div v-for="item in desc" :key="item.name" class="c-file-item-info">
       {{ item.name }}: 
       {{ item.value }}
     </div>
     <div class="c-file-item-btns">
-      <a-button @click="donwloadFile">下载</a-button>
+      <a-button :loading="loading" @click="donwloadFile">下载</a-button>
       <a-button type="danger" @click="$emit('delete', info)">删除</a-button>
     </div>
   </div>
@@ -14,6 +14,8 @@
 <script>
 import axios from 'axios';
 
+// 在 iPad 上 safari chrome 均无法正常下载
+// 在 Mac，iPhone 上 safari 可以正常下载
 const saveAs = (blob, filename) => {
   const link = document.createElement('a');
   const body = document.querySelector('body');
@@ -29,6 +31,11 @@ const saveAs = (blob, filename) => {
 export default {
   props: {
     info: { type: Object, default: () => {} },
+  },
+  data() {
+    return {
+      loading: false,
+    }
   },
   computed: {
     desc() {
@@ -55,6 +62,7 @@ export default {
   },
   methods: {
     donwloadFile() {
+      this.loading = true;
       axios
         .post(
           '/api/file/download',
@@ -64,6 +72,7 @@ export default {
           { responseType: 'blob' }
         )
         .then((res) => {
+          this.loading = false;
           saveAs(res.data, this.$props.info.name);
         });
     },
@@ -84,6 +93,14 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  &-info {
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+    word-break: break-all;
+    -webkit-box-orient: vertical;
+  }
   &-btns {
     text-align: right;
   }

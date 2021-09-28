@@ -87,8 +87,13 @@ export default {
     align-items: center;
   }
   &-name {
+    max-width: 100%;
     font-size: 20px;
     font-weight: bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-break: break-all;
   }
   &-loading {
     font-size: 14px;
