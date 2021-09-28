@@ -68,6 +68,6 @@ export default {
 
 <style scoped lang="less">
 .p-login {
-  margin-top: 40px;
+  padding: 40px;
 }
 </style>

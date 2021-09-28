@@ -7,7 +7,12 @@
     <div v-else class="c-upload-file-sub" @click="chooseFile">
       <a-icon type="file-add" style="font-size: 40px" />
       <span class="c-upload-file-tip">点击选择文件或拖拽上传</span>
-      <input ref="inputRef" type="file" style="display: none" />
+      <input
+        ref="inputRef"
+        type="file"
+        style="display: none"
+        @change="handleFileChange"
+      />
     </div>
   </div>
 </template>
@@ -43,7 +48,7 @@ export default {
       axios.post('/api/file/upload', form).then((res) => {
         const { message, code } = res.data;
         if (code !== 0) {
-          this.$message.info(message); 
+          this.$message.info(message);
         }
         setTimeout(() => {
           this.$emit('fresh');
@@ -53,7 +58,15 @@ export default {
     },
     chooseFile() {
       this.$refs.inputRef.click();
-    }
+    },
+    handleFileChange(e) {
+      const file = e.target.files[0];
+      if (!file) {
+        return;
+      }
+      this.file = file;
+      this.uploadFile();
+    },
   },
 };
 </script>

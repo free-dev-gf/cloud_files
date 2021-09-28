@@ -61,7 +61,7 @@ async function start() {
 
   const CONFIG = {
     key: 'login',
-    maxAge: 3600000, // 1小时
+    maxAge: 36000000, // 10小时
     autoCommit: true,
     overwrite: true,
     httpOnly: true,
