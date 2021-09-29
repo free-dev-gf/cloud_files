@@ -8,7 +8,7 @@ async function main() {
 const UserSchema = new mongoose.Schema({
   id: { type: Number },
   name: { type: String, required: true },
-  password: { type: String, required: true },
+  password: { type: String },
 });
 
 const FileSchema = new mongoose.Schema({

@@ -25,6 +25,40 @@
 import axios from 'axios';
 import Vue from 'vue';
 
+const getToken = () => {
+  const cookie = document.cookie
+    .split('; ')
+    .reduce(
+      (a, b) => ({ ...a, ...{ [b.split('=')[0]]: b.split('=')[1] } }),
+      {}
+    );
+  return cookie['oauthToken'];
+};
+
+axios.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.response && error.response.status === 401 && location) {
+      location.href = '/login';
+    }
+    return error;
+  }
+);
+
+axios.interceptors.request.use(function (config) {
+  if (config.url && config.url.match(/^\/api/)) {
+    return {
+      ...config,
+      headers: {
+        token: getToken() || '',
+      },
+    };
+  }
+  return config;
+});
+
 export default Vue.extend({
   data() {
     return {
@@ -51,16 +85,14 @@ export default Vue.extend({
         });
     },
     async getData() {
-      const res = await axios.get('/api/data');
-      const { message, code, data } = res.data;
-      if (code === 0) {
-        this.$store.commit('user/updateData', data);
-      } else {
-        this.$message.info(message);
-      }
-      if (code === -1) {
-        location.href = '/login';
-      }
+      await axios.get('/api/data').then((res) => {
+        const { message, code, data } = res.data;
+        if (code === 0) {
+          this.$store.commit('user/updateData', data);
+        } else {
+          this.$message.info(message);
+        }
+      });
     },
   },
   async mounted() {
