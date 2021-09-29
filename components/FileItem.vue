@@ -1,8 +1,8 @@
 <template>
   <div class="c-file-item">
     <div v-for="item in desc" :key="item.name" class="c-file-item-info">
-      {{ item.name }}: 
-      {{ item.value }}
+      <span>{{ item.name }}:</span>
+      <span :style="item.name === '文件名称' ? 'font-weight: bold;' : ''">{{ item.value }}</span>
     </div>
     <div class="c-file-item-btns">
       <a-button :loading="loading" @click="donwloadFile">下载</a-button>
@@ -42,7 +42,7 @@ export default {
       const { name, createTime, id, size } = this.$props.info;
       return [
         {
-          name: 'id',
+          name: 'ID',
           value: id,
         },
         {
@@ -100,6 +100,10 @@ export default {
     -webkit-line-clamp: 2;
     word-break: break-all;
     -webkit-box-orient: vertical;
+    span:nth-of-type(1) {
+      color: #aaa;
+      margin-right: 6px;
+    }
   }
   &-btns {
     text-align: right;
