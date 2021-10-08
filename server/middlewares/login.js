@@ -75,7 +75,7 @@ module.exports.checkHandler = async (ctx, next) => {
       return;
     }
     const token = ctx.request.get('token');
-    const { logined } = ctx.session.login;
+    const { logined } = ctx.session.login || {};
     if (token) {
       const { username } = jwt.verify(token, ctx.jwtKey);
       const userItem = await User.findOne({ name: username });
